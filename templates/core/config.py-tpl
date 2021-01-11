@@ -9,13 +9,13 @@ class Settings(BaseSettings):
 	API_V1_STR: str = "/api/v1"
 
 	SECRET_KEY: str = "{{ conf.secret_key }}"
-	# JWT过期时间
+	# JWT expiration time
 	ACCESS_TOKEN_EXPIRES_MINUTES: int = 60 * 24
 
-	# 跨域请求配置
+	# Cross-domain request configuration
 	BACKEND_CORS_ORIGINS: List = ["*"]
 
-	# 数据库配置
+	# Database configuration
 	MYSQL_USER: str = "{{ conf.mysql_user }}"
 	MYSQL_PASS: str = "{{ conf.mysql_pass }}"
 	MYSQL_HOST: str = "{{ conf.mysql_host }}"
@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 	MYSQL_PORT: str = "{{ conf.mysql_port }}"
 	SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
 
-	# redis储存地址
+	# Redis store address
 	REDIS_STORAGE = "redis://{{ conf.redis_host }}:{{ conf.redis_port }}/?password={{ conf.redis_password }}"
 
 	class Config:

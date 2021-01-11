@@ -1,12 +1,14 @@
+import os
 from pydantic import BaseSettings
 
 
 class Configure(BaseSettings):
     templates_dir: str = 'templates'
-    bin_file: str = 'bin_files'
+    bin_dir: str = os.path.join('fastapi-manage', 'fastapi_manage')
+    bin_file: str = 'main.py'
 
-    project_file_dir: str = 'project_file_dir.py'
-    project_file_data: str = 'project_file_data.py'
+    file_dir_num = 11
+    file_data_num = 10
 
     project_name: str = ""
     secret_key: str = ""

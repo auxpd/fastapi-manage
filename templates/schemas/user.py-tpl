@@ -19,7 +19,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     role: int
-    password: str = None  # 内部人员不需要设置密码
+    password: str = None
     is_staff: Optional[bool] = False
 
 

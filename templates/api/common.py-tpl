@@ -39,9 +39,9 @@ def verify_token(token: str) -> Tuple[bool, Optional[models.User]]:
     try:
         user = crud.user.get_by_userid(db, token_data.sub)
         if not user:
-            raise HTTPException(status_code=401, detail='用户不存在')
+            raise HTTPException(status_code=401, detail='user does not exist')
         if not user.is_active:
-            raise HTTPException(status_code=401, detail='用户账户被禁用')
+            raise HTTPException(status_code=401, detail='account is disabled')
         return True, user
     finally:
         db.close()
