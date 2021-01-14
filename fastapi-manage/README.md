@@ -1,11 +1,16 @@
 # fastapi_manage
 
-#### 介绍
-fastapi的模板生成，数据库版本管理项目  
-FastAPI template generation, database version management project  
+#### Project description
+fastapi的模板生成，数据库版本管理项目。  
+FastAPI template generation, database version management tools.  
+Just like Django.  
 
 fastapi+sqlalchemy  
 
+#### Installation
+```shell
+pip install fastapi-manage
+```
 
 #### Usage
 ##### startproject
@@ -30,13 +35,13 @@ python manage.py migrate
 ```
 
 ##### runserver
-Starts a lightweight Web server for development.
+Start a Web server
 ```shell
 cd ./yourproject
 python mange.py runserver
 ```
-Options:
--h, --host　　　　　[default:127.0.0.1]
--p, --port　　　　　[default:8000]
--w, --workers　　　[default:1]
---reload　　　　　　auto-reloader
+Options:  
+-h, --host　　　　　[default:127.0.0.1]  
+-p, --port　　　　　[default:8000]  
+-w, --workers　　　[default:1]  
+--reload　　　　　　auto-reloader  

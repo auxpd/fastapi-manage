@@ -1,9 +1,16 @@
 [tool.poetry]
 name = "fastapi-manage"
-version = "0.4.0"
-description = ""
+version = "0.5.0"
+description = "FastAPI template generation, database version management tools"
 authors = ["lewei_huang <auxpd96@163.com>"]
 readme = 'README.md'
+license = "MIT"
+classifiers=[
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 
 [tool.poetry.scripts]
 fastapi-manage = "fastapi_manage.main:app"
