@@ -1,21 +1,19 @@
-# fastapi_manage
+# fastapi-manage
 
 #### 介绍
-fastapi的模板生成，数据库版本管理项目  
+fastapi的模板生成，数据库版本管理工具   
 fastapi+sqlalchemy  
 此项目包含了模板目录(./templates)和模板应用工具(./serializer.py) 提供给开发者自行定制修改的一个工具
-
-#### 软件架构
-软件架构说明
 
 
 #### 使用说明
 
 1.  templates 存放着模板文件
     - 支持开发者修改自定义模型
-2.  serializer 负责将模板文件写入到main.py中，成为一个变量 
+2.  serializer.py 负责将模板文件写入到main.py中，成为一个变量 
     - 支持开发者进行修改或开发新的模板
-3.  main 负责提供所有功能，创建项目，执行迁移等等 
+3.  conf.py 里包含可配置的模板参数
+4.  main 负责提供所有功能，创建项目，执行迁移等等
 
 #### fastapi-manage的使用
 ##### 安装
