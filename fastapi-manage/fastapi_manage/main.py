@@ -82,7 +82,7 @@ def makemigrations(
     """
     # import the config package
     try:
-        sys.path.insert(-1, os.path.join(os.path.abspath('fastapi-manage')))
+        sys.path.insert(-1, os.path.join(os.path.abspath('.')))
         conf = __import__('core.config').config
         project = conf.settings
     except ModuleNotFoundError:
