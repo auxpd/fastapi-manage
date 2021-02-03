@@ -62,6 +62,11 @@ Options:
 4.  新建 Pull Request
 
 
+#### 版本说明
+##### 0.7.0
+- 修改了生成密码hash的方式，可自定义调整加盐的次数
+- 修复了在windows系统下使用serializer的兼容问题
+
 #### 特技
 
 1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md

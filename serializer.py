@@ -13,7 +13,7 @@ def main():
     tmp_files = os.walk(os.path.join(os.getcwd(), tmp_dir))
     result = []
     for root, dirs, files in tmp_files:
-        root = root.split(abs_tmp_dir)[-1].split('/')[1:]
+        root = root.split(abs_tmp_dir)[-1].split(os.sep)[1:]
         if root[:-1] not in result and root:  # 不重复且不为空
             result.append(root)
         elif root:
@@ -26,7 +26,7 @@ def main():
         path = os.path.join(*directory)
         project_dir.append(path)
         # os.makedirs()  # 项目文件夹加上path，递归创建文件夹
-    with open(os.path.join(config.bin_dir, config.bin_file), 'r') as f:
+    with open(os.path.join(config.bin_dir, config.bin_file), 'r', encoding='utf-8') as f:
         file_list = f.readlines()
         file_list[config.file_dir_num] = f'project_dir = {project_dir}\n'
 
@@ -42,10 +42,10 @@ def main():
             file_data[path] = {}
         for file in files:
             print(file)
-            with open(os.path.join(tmp_dir, path, file), 'r') as f:
+            with open(os.path.join(tmp_dir, path, file), 'r', encoding='utf-8') as f:
                 file_data[path][file] = f.readlines()
     file_list[config.file_data_num] = f'file_data = {file_data}\n'
-    with open(os.path.join(config.bin_dir, config.bin_file), 'w') as f:
+    with open(os.path.join(config.bin_dir, config.bin_file), 'w', encoding='utf-8') as f:
         f.writelines(file_list)
 
 

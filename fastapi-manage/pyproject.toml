@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastapi-manage"
-version = "0.6.0"
+version = "0.7.0"
 description = "FastAPI template generation, database version management tools"
 authors = ["lewei_huang <auxpd96@163.com>"]
 readme = 'README.md'
