@@ -63,6 +63,8 @@ Options:
 
 
 #### 版本说明
+##### 0.7.1
+- 增加了alembic依赖,在安装fastapi-manage时自动安装
 ##### 0.7.0
 - 修改了生成密码hash的方式，可自定义调整加盐的次数
 - 修复了在windows系统下使用serializer的兼容问题

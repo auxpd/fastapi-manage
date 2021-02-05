@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastapi-manage"
-version = "0.7.0"
+version = "0.7.1"
 description = "FastAPI template generation, database version management tools"
 authors = ["lewei_huang <auxpd96@163.com>"]
 readme = 'README.md'
@@ -25,6 +25,7 @@ fastapi = ">=0.62.0"
 uvicorn = ">=0.11.8"
 SQLAlchemy = ">=1.3.20"
 PyMySQL = ">=0.9.3"
+alembic = ">=1.4.3"
 
 [tool.poetry.dev-dependencies]
 pytest = ">=5.2"
