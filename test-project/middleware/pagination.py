@@ -1,16 +1,18 @@
 from fastapi import HTTPException, status
 from starlette.middleware.base import BaseHTTPMiddleware
 
+from core.config import settings
+
 
 class PaginationMiddleware(BaseHTTPMiddleware):
     """
     分页中间件
     """
-    def __init__(self, app, page_query_param: str = 'page',
-                 page_size_query_param: str = 'page_size',):
+    def __init__(self, app):
         super().__init__(app)
-        self.page_query_param = page_query_param
-        self.page_size_query_param = page_size_query_param
+        self.page_query_param = settings.PAGE_QUERY_PARAM if hasattr(settings, 'PAGE_QUERY_PARAM') else 'page'
+        self.page_size_query_param = settings.PAGE_SIZE_QUERY_PARAM if hasattr(settings, 'PAGE_SIZE_QUERY_PARAM') else \
+            'page_size'
 
     async def dispatch(self, request, call_next):
         request.state.num_pages = request.query_params.get(self.page_query_param, 1)
