@@ -1,7 +1,6 @@
 import os
+from functools import lru_cache
 from typing import List
-
-from dotenv import load_dotenv, find_dotenv
 
 from pydantic import BaseSettings
 
@@ -40,20 +39,19 @@ class Settings(BaseSettings):
 	TEST_1: int = 123
 	TEST_2: list = []
 
-	# def __new__(cls, *args, **kwargs):
-	# 	obj = object.__new__(cls)
-	# 	if find_dotenv():
-	# 		load_dotenv(encoding='utf-8')
-	# 		for key in obj.__fields__:
-	# 			env_value = os.getenv(key)
-	# 			if env_value:
-	# 				obj.__setattr__(key, env_value)
-	# 	else:
-	# 		...  # web_request
-	# 	return obj
-
 	class Config:
 		case_sensitive = True
 
 
-settings = Settings()
+@lru_cache(1)
+def get_config():
+	from dotenv import load_dotenv, find_dotenv
+	if find_dotenv():
+		load_dotenv(encoding='utf8')
+		return Settings()
+	else:
+		os.environ['TEST_1'] = '88888'
+		return Settings()
+
+
+settings = get_config()

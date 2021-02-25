@@ -1,6 +1,7 @@
 from typing import List, Union
 
 from fastapi import HTTPException, Request
+from sqlalchemy.orm import Session
 from starlette.authentication import has_required_scope
 
 
@@ -16,6 +17,7 @@ class Utils(BaseDepends):
     """
     工具类
     返回Request对象
+    utils.db.session = Session
     """
     def __init__(self, auth: bool = True, scopes: Union[List[str], str] = None):
         super().__init__()
@@ -31,4 +33,6 @@ class Utils(BaseDepends):
                 scopes_list = [self.scopes] if isinstance(self.scopes, str) else list(self.scopes)
                 if not has_required_scope(request, scopes_list):
                     raise HTTPException(detail='permission denied', status_code=403)
+        request.db = request.state.db
+        assert isinstance(request.db.session, Session)
         return request
