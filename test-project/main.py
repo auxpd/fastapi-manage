@@ -39,6 +39,11 @@ if settings.BACKEND_CORS_ORIGINS:  # cors middleware
 #            # compression='zip'
 #            )
 
+
+@app.on_event('startup')
+async def startup_event():
+    print('启动事件')
+
 # app.include_router(api_router)
 
 # V1

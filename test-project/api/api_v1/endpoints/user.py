@@ -25,4 +25,5 @@ async def get_user(*, utils: Utils(False) = Depends(),) -> Any:
     session: Session = utils.db.session
     sql = "select * FROM user where id = 1;"
     result = session.execute(sql).fetchall()
+    print(settings.TEST_1)
     return result
