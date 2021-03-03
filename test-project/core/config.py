@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 	SALT_ROUNDS: int = 4
 
 	# JWT expiration time
-	ACCESS_TOKEN_EXPIRES_MINUTES: int = 1
+	ACCESS_TOKEN_EXPIRES_MINUTES: int = 30
 
 	# Pagination
 	PAGE_QUERY_PARAM: str = ''
@@ -27,15 +27,21 @@ class Settings(BaseSettings):
 	BACKEND_CORS_ORIGINS: List = ["*"]
 
 	# Database configuration
-	MYSQL_USER: str = "dfc_user"
-	MYSQL_PASS: str = "Aa1234"
-	MYSQL_HOST: str = "10.210.120.226"
-	MYSQL_DB: str = "dfc_bk"
+	MYSQL_USER: str = "test_user"
+	MYSQL_PASS: str = "123456"
+	MYSQL_HOST: str = "127.0.0.1"
+	MYSQL_DB: str = "test_db"
 	MYSQL_PORT: str = "3306"
-	SQLALCHEMY_DATABASE_URI: str = f"mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
+	SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
 
 	# Redis store address
 	REDIS_STORAGE = "redis://127.0.0.1:6379/?password="
+
+	# RateLimitBackend
+	RATE_LIMIT_BACKEND_HOST: str = '127.0.0.1'
+	RATE_LIMIT_BACKEND_PORT: str = '6379'
+	RATE_LIMIT_BACKEND_DB: str = '12'
+	RATE_LIMIT_BACKEND_PASS: str = 'Aa1234'
 
 	TEST_1: int = 123
 	TEST_2: list = []

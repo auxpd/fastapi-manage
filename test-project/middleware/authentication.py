@@ -42,7 +42,7 @@ class BearerAuthBackend(AuthenticationBackend):
     token_payload = schemas.TokenPayload
 
     async def authenticate(self, request):
-        if self.headers not in request.headers:
+        if self.headers.lower() not in request.headers:
             return AuthCredentials(), UnauthenticatedUser()
 
         auth = request.headers[self.headers]
