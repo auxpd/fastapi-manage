@@ -1,8 +1,11 @@
 from typing import List, Union
 
-from fastapi import HTTPException, Request
+from fastapi import Depends, HTTPException, Request
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from starlette.authentication import has_required_scope
+
+oauth2 = OAuth2PasswordBearer(tokenUrl='/api/v1/user/login')
 
 
 class BaseDepends:
@@ -13,13 +16,13 @@ class BaseDepends:
         self.request = request
 
 
-class Utils(BaseDepends):
+class UtilsBase(BaseDepends):
     """
     工具类
     返回Request对象
     utils.db.session = Session
     """
-    def __init__(self, auth: bool = True, scopes: Union[List[str], str] = None):
+    def __init__(self, auth: bool = False, scopes: Union[List[str], str] = None):
         super().__init__()
         self.auth = auth
         self.scopes = scopes
@@ -36,3 +39,13 @@ class Utils(BaseDepends):
         request.db = request.state.db
         assert isinstance(request.db.session, Session)
         return request
+
+
+class Utils(UtilsBase):
+
+    def __call__(self, request: Request, token: str = Depends(oauth2)):
+        return super().__call__(request)
+
+    def __new__(cls, auth: bool = False, *args, **kwargs):
+        obj = cls if auth else UtilsBase
+        return object.__new__(obj)

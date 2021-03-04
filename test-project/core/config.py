@@ -70,12 +70,12 @@ def get_config():
 		load_dotenv(encoding='utf8')
 		return Settings()
 	else:
-		dev_mode = os.getenv('DEV_MODE', None)
+		dev_mode = os.getenv('DEV_MODE', 'test')
 		assert dev_mode in ['test', 'prod']
 		devops_api = f'{devops_server_host}/api/apis/config/?apiKey={api_key}&app={app}&env={dev_mode}&format=json'
 		if dev_mode == 'prod':
 			logger.debug('识别生产模式, 自动请求生产环境env配置')
-			requests.get()
+			# requests.get()
 			os.environ['TEST_1'] = '88888'
 			return Settings()
 		else:
