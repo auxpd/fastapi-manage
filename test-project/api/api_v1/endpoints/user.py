@@ -24,7 +24,7 @@ async def get_t1(*, utils: Utils(False) = Depends(), flag: bool):
 
 
 @router.get('/users')
-async def get_user(*, utils: Utils(False) = Depends(), ) -> Any:
+async def get_user(*, utils: Utils(False, ['user']) = Depends(), ) -> Any:
     session: Session = utils.db.session
     sql = "select * FROM user where id = 1;"
     result = session.execute(sql).fetchall()

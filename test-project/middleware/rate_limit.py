@@ -72,10 +72,10 @@ class RedisBackend(redisBackendMixin):
             db: int = 0,
             password: str = None,
     ) -> None:
-        host = settings.RATE_LIMIT_BACKEND_HOST if hasattr(settings, 'RATE_LIMIT_BACKEND_HOST') else host
-        port = settings.RATE_LIMIT_BACKEND_PORT if hasattr(settings, 'RATE_LIMIT_BACKEND_PORT') else port
-        db = settings.RATE_LIMIT_BACKEND_DB if hasattr(settings, 'RATE_LIMIT_BACKEND_DB') else db
-        password = settings.RATE_LIMIT_BACKEND_PASS if hasattr(settings, 'RATE_LIMIT_BACKEND_PASS') else password
+        host = settings.RATE_LIMIT_REDIS_BACKEND_HOST if hasattr(settings, 'RATE_LIMIT_REDIS_BACKEND_HOST') else host
+        port = settings.RATE_LIMIT_REDIS_BACKEND_PORT if hasattr(settings, 'RATE_LIMIT_REDIS_BACKEND_PORT') else port
+        db = settings.RATE_LIMIT_REDIS_BACKEND_DB if hasattr(settings, 'RATE_LIMIT_REDIS_BACKEND_DB') else db
+        password = settings.RATE_LIMIT_REDIS_BACKEND_PASS if hasattr(settings, 'RATE_LIMIT_REDIS_BACKEND_PASS') else password
         super().__init__(host, port, db, password)
 
 

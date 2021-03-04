@@ -1,5 +1,13 @@
 from celery import Celery
 
-app = Celery('fastapi-worker', broker='redis://127.0.0.1:6379/7?password=')
-# app.conf.task_router = {'tasks.my_tasks.get_celery': {'queue': 'my-queue'}}
+from core.config import settings
+
+
+app = Celery(settings.PROJECT_NAME,
+             broker=settings.CELERY_BROKER,
+             backend=settings.CELERY_BACKEND)
 app.autodiscover_tasks(['tasks'])
+
+# app.conf.task_routes = {'tasks.my_tasks.get_celery': {'queue': 'my-queue'}}
+app.conf.broker_transport_options = {'visibility_timeout': 2}
+
