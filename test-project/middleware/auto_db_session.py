@@ -14,7 +14,7 @@ class DBSessionMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         request.state.db = DBSession()
         response = await call_next(request)
-        del request.state.db
+        request.state.db.__del__()
         return response
 
 

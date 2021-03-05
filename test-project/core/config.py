@@ -27,6 +27,9 @@ class Settings(BaseSettings):
 	# Cross-domain request configuration
 	BACKEND_CORS_ORIGINS: List = ["*"]
 
+	# Utils configuration
+	UTILS_LOGIN_PATH: str = API_V1_STR + '/user/login'
+
 	# Database configuration
 	MYSQL_USER: str = "test_user"
 	MYSQL_PASS: str = "123456"
@@ -51,8 +54,7 @@ class Settings(BaseSettings):
 	CELERY_BROKER: str = 'redis://:Aa1234@127.0.0.1:6379/7'
 	CELERY_BACKEND: str = 'redis://:Aa1234@127.0.0.1:6379/8'
 
-	TEST_1: int = 123
-	TEST_2: list = []
+	TEST_1: str = '6666'
 
 	class Config:
 		case_sensitive = True

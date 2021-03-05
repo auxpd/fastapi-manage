@@ -1,18 +1,25 @@
 from datetime import datetime, timedelta
-from typing import Any, Union
+from typing import Any, List, Optional, Union
 
 import bcrypt
 from jose import jwt
+from pydantic import BaseModel
 
-from .config import settings
+from core.config import settings
 
 
 ALGORITHM = 'HS256'
 
 
+class TokenPayload(BaseModel):
+    exp: int
+    sub: int = None
+    group: Optional[List[str]] = None
+
+
 # create token
 def create_access_token(
-    subject: Union[str, Any], group: str = 'user', expires_delta: timedelta = None
+    subject: Union[str, Any], group: Optional[List[str]] = None, expires_delta: timedelta = None
 ) -> str:
     if expires_delta:
         expire = datetime.utcnow() + expires_delta

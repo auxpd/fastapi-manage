@@ -42,7 +42,7 @@ if settings.BACKEND_CORS_ORIGINS:  # cors middleware
 
 @app.on_event('startup')
 async def startup_event():
-    print('启动事件')
+    print('startup_event')
 
 # app.include_router(api_router)
 
