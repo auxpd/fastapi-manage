@@ -92,7 +92,7 @@ def makemigrations(
     # determine database configuration
     if not project.MYSQL_USER or not project.MYSQL_PASS \
             or not project.MYSQL_HOST or not project.MYSQL_DB or not project.MYSQL_PORT:
-        print('error: database configuration exception. Check the database configuration in the config.py')
+        print('error: database configuration exception. Check the database configuration in the config.py-tpl')
         sys.exit()
 
     # modify ini file

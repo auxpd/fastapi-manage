@@ -4,32 +4,32 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-	PROJECT_NAME: str = "{{ conf.project_name }}"
+    PROJECT_NAME: str = "{{ conf.project_name }}"
 
-	API_V1_STR: str = "/api/v1"
+    API_V1_STR: str = "/api/v1"
 
-	SECRET_KEY: str = "{{ conf.secret_key }}"
-	SALT_ROUNDS: int = 4
+    SECRET_KEY: str = "{{ conf.secret_key }}"
+    SALT_ROUNDS: int = 4
 
-	# JWT expiration time
-	ACCESS_TOKEN_EXPIRES_MINUTES: int = 60 * 24
+    # JWT expiration time
+    ACCESS_TOKEN_EXPIRES_MINUTES: int = 60 * 24
 
-	# Cross-domain request configuration
-	BACKEND_CORS_ORIGINS: List = ["*"]
+    # Cross-domain request configuration
+    BACKEND_CORS_ORIGINS: List = ["*"]
 
-	# Database configuration
-	MYSQL_USER: str = "{{ conf.mysql_user }}"
-	MYSQL_PASS: str = "{{ conf.mysql_pass }}"
-	MYSQL_HOST: str = "{{ conf.mysql_host }}"
-	MYSQL_DB: str = "{{ conf.mysql_db }}"
-	MYSQL_PORT: str = "{{ conf.mysql_port }}"
-	SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
+    # Database configuration
+    MYSQL_USER: str = "{{ conf.mysql_user }}"
+    MYSQL_PASS: str = "{{ conf.mysql_pass }}"
+    MYSQL_HOST: str = "{{ conf.mysql_host }}"
+    MYSQL_DB: str = "{{ conf.mysql_db }}"
+    MYSQL_PORT: str = "{{ conf.mysql_port }}"
+    SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
 
-	# Redis store address
-	REDIS_STORAGE = "redis://{{ conf.redis_host }}:{{ conf.redis_port }}/?password={{ conf.redis_password }}"
+    # Redis store address
+    REDIS_STORAGE = "redis://{{ conf.redis_host }}:{{ conf.redis_port }}/?password={{ conf.redis_password }}"
 
-	class Config:
-		case_sensitive = True
+    class Config:
+        case_sensitive = True
 
 
 settings = Settings()
