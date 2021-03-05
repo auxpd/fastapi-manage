@@ -18,7 +18,14 @@ class DBSessionMiddleware(BaseHTTPMiddleware):
         return response
 
 
-class DBSession:
+class DBSessionBase:
+    @property
+    def session(self):
+        logger.error('DBSessionMiddleware must be installed to access session')
+        raise NotImplementedError('DBSessionMiddleware must be installed to access session')
+
+
+class DBSession(DBSessionBase):
     def __init__(self):
         self._db = None
 

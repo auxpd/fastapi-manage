@@ -7,6 +7,7 @@ from starlette.requests import HTTPConnection
 
 from core.config import settings
 from middleware.authentication import BearerAuthenticationMiddleware
+from middleware.auto_db_session import DBSessionBase
 
 oauth2 = OAuth2PasswordBearer(tokenUrl=settings.UTILS_LOGIN_PATH)
 
@@ -40,6 +41,8 @@ class UtilsBase(BaseDepends):
                 scopes_list = [self.scopes] if isinstance(self.scopes, str) else list(self.scopes)
                 if not self.has_required_scope(request, scopes_list):
                     raise HTTPException(detail='permission denied', status_code=403)
+        if not hasattr(request.state, 'db'):
+            request.state.db = DBSessionBase()
         request.db = request.state.db
         return request
 
@@ -59,16 +62,16 @@ class Utils(UtilsBase):
     工具类
     返回Request对象, 额外包含db属性
     utils.app  # app对象
-    utils.db.session  # 数据库会话对象
     utils.client  # 客户端的来源地址和端口
     utils.method  # 请求方法
     utils.headers  # 请求头
     utils.cookies  # cookies
     utils.query_params  # 查询参数(page=1&page_size=10)
     utils.scope  # scope对象
+    utils.session
     utils.user  # 包含is_authenticated, display_name 属性  需要添加authentication中间件！
     utils.auth  # 包含scopes(用户所在的组 list)  需要添加authentication中间件！
-    utils.session
+    utils.db.session  # 数据库会话对象  需要添加DBSessionMiddleware中间件！
     ...
     """
     middleware_check_flag = False

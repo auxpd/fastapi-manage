@@ -47,3 +47,9 @@ async def get_paginate(*, utils: Utils(False) = Depends(), pagination: Paginatio
     pagination.queryset = queryset
     print(pagination.count())
     return pagination.get_page()
+
+
+@router.get('/t3')
+async def get_t3(*, utils: Utils(False) = Depends(), ) -> Any:
+    # session = utils.db.session
+    return utils.method
