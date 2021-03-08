@@ -17,15 +17,10 @@ class TokenPayload(BaseModel):
     group: Optional[List[str]] = None
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-
 # create token
 def create_access_token(
     subject: Union[str, Any], group: Optional[List[str]] = None, expires_delta: timedelta = None
-) -> Token:
+) -> str:
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
@@ -34,7 +29,7 @@ def create_access_token(
         )
     to_encode = {"exp": expire, "sub": str(subject), 'group': group}
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
-    return Token(access_token=encoded_jwt, token_type='bearer')
+    return encoded_jwt
 
 
 # verify password

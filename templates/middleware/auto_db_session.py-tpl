@@ -6,7 +6,7 @@ from db.session import SessionFactory
 
 class DBSessionMiddleware(BaseHTTPMiddleware):
     """
-    会话自动管理
+    DB session automatic management
     """
     def __init__(self, app):
         super().__init__(app)

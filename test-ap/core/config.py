@@ -14,6 +14,9 @@ class Settings(BaseSettings):
 
     API_V1_STR: str = "/api/v1"
 
+    # Utils configuration
+    UTILS_LOGIN_PATH: str = f'{API_V1_STR}/user/login'
+
     SECRET_KEY: str = "jymxRSTcLK7Y0AJrYVT12BGQ7HO7IvhXx5HM5_z55Xo"
     SALT_ROUNDS: int = 4
 
@@ -30,6 +33,7 @@ class Settings(BaseSettings):
     # Cross-domain request configuration
     BACKEND_CORS_ORIGINS: List = ["*"]
 
+
     # Database configuration
     MYSQL_USER: str = "test_user"
     MYSQL_PASS: str = "123456"
@@ -45,7 +49,7 @@ class Settings(BaseSettings):
     REDIS_STORAGE = f"redis://{REDIS_STORAGE_HOST}:{REDIS_STORAGE_PORT}/?password={REDIS_STORAGE_PASS}"
 
     # RateLimitBackend
-    RATE_LIMIT_REDIS_BACKEND_HOST: str = 'localhost'
+    RATE_LIMIT_REDIS_BACKEND_HOST: str = '127.0.0.1'
     RATE_LIMIT_REDIS_BACKEND_PORT: str = '6379'
     RATE_LIMIT_REDIS_BACKEND_DB: str = '12'
     RATE_LIMIT_REDIS_BACKEND_PASS: str = 'Aa1234'

@@ -12,12 +12,6 @@ from middleware.authentication import BearerAuthenticationMiddleware
 oauth2 = OAuth2PasswordBearer(tokenUrl=f'{settings.API_V1_STR}/user/login')
 
 
-"""
-在使用前需要在config.py中配置登陆接口 UTILS_LOGIN_PATH
-之后直接导入即可 
-"""
-
-
 class BaseDepends:
     def __init__(self):
         pass
@@ -59,20 +53,7 @@ class UtilsBase(BaseDepends):
 
 class Utils(UtilsBase):
     """
-    工具类
-    返回Request对象, 额外包含db属性
-    utils.app  # app对象
-    utils.client  # 客户端的来源地址和端口
-    utils.method  # 请求方法
-    utils.headers  # 请求头
-    utils.cookies  # cookies
-    utils.query_params  # 查询参数(page=1&page_size=10)
-    utils.scope  # scope对象
-    utils.session
-    utils.user  # 包含is_authenticated, display_name 属性  需要添加authentication中间件！
-    utils.auth  # 包含scopes(用户所在的组 list)  需要添加authentication中间件！
-    utils.db.session  # 数据库会话对象  需要添加DBSessionMiddleware中间件！
-    ...
+    expansion of the request obj
     """
     middleware_check_flag = False
 
@@ -88,3 +69,4 @@ class Utils(UtilsBase):
 
     def __new__(cls, auth: bool = False, *args, **kwargs):
         return object.__new__(cls) if auth else UtilsBase(auth, *args, **kwargs)
+

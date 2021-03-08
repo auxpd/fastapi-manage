@@ -1,10 +1,14 @@
 from typing import List
+from functools import lru_cache
 
+from loguru import logger
 from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "{{ conf.project_name }}"
+
+    LOG_LEVEL: str = 'DEBUG'  # TRACE, INFO, SUCCESS, WARNING, ERROR, CRITICAL ...
 
     API_V1_STR: str = "/api/v1"
 
@@ -13,6 +17,9 @@ class Settings(BaseSettings):
 
     # JWT expiration time
     ACCESS_TOKEN_EXPIRES_MINUTES: int = 60 * 24
+
+    # timezone
+    TIMEZONE: str = "Asia/Shanghai"
 
     # Cross-domain request configuration
     BACKEND_CORS_ORIGINS: List = ["*"]
@@ -26,11 +33,35 @@ class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
 
     # Redis store address
-    REDIS_STORAGE = "redis://{{ conf.redis_host }}:{{ conf.redis_port }}/?password={{ conf.redis_password }}"
+    REDIS_STORAGE_HOST: str = "{{ conf.redis_host }}"
+    REDIS_STORAGE_PORT: str = "{{ conf.redis_port }}"
+    REDIS_STORAGE_PASS: str = "{{ conf.redis_password }}"
+    REDIS_STORAGE = f"redis://{REDIS_STORAGE_HOST}:{REDIS_STORAGE_PORT}/?password={REDIS_STORAGE_PASS}"
+
+    # RateLimitBackend
+    RATE_LIMIT_REDIS_BACKEND_HOST: str = 'localhost'
+    RATE_LIMIT_REDIS_BACKEND_PORT: str = '6379'
+    RATE_LIMIT_REDIS_BACKEND_DB: str = '0'
+    RATE_LIMIT_REDIS_BACKEND_PASS: str = ''
+
+    # Celery broker & backend
+    CELERY_BROKER: str = ''
+    CELERY_BACKEND: str = ''
 
     class Config:
         case_sensitive = True
 
 
-settings = Settings()
+@lru_cache(1)
+def get_config():
+    from dotenv import load_dotenv, find_dotenv
+    if find_dotenv():
+        logger.debug('Locate .env file and configure the project with.env')
+        load_dotenv(encoding='utf8')
+        return Settings()
+    else:
+        return Settings()
+
+
+settings = get_config()
 

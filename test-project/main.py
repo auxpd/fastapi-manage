@@ -1,11 +1,11 @@
+from loguru import logger
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from loguru import logger
 
 from core.config import settings
 from api.api_v1.api import api_router
-from middleware.authentication import BearerAuthenticationMiddleware
 from middleware.auto_db_session import DBSessionMiddleware
+from middleware.authentication import BearerAuthenticationMiddleware
 
 app = FastAPI(
     title=settings.PROJECT_NAME,

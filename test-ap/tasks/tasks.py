@@ -2,9 +2,9 @@ import time
 
 from loguru import logger
 
-from core.celery import app
-from core.config import settings
+from . import app
 import models
+from core.config import settings
 from db.session import SessionFactory
 
 

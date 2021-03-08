@@ -1,3 +1,3 @@
 #!/bin/bash
 
-celery -A tasks.my_tasks worker -l info
+celery -A tasks worker -l info
