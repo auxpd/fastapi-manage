@@ -17,7 +17,6 @@ from libs import security
 from core.config import settings
 
 
-
 class BearerAuthenticationMiddleware(AuthenticationMiddleware):
     def __init__(
             self,
