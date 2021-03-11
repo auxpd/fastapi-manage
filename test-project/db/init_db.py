@@ -1,5 +1,5 @@
 from db.base_class import Base
-from db import engine
+from db.session import engine
 
 
 if __name__ == '__main__':

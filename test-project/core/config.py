@@ -73,6 +73,8 @@ def get_config():
         return Settings()
     else:
         import json
+        import os
+        import requests
 
         dev_mode = os.getenv('DEV_MODE', 'dev')
         assert dev_mode in ['test', 'stable', 'dev']
