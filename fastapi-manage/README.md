@@ -48,6 +48,8 @@ Options:
 
 ### 项目详细使用说明
 
+![image-20210312104602483](C:\Users\8201260\AppData\Roaming\Typora\typora-user-images\image-20210312104602483.png)
+
 #### 1. alembic  & alembic.ini
 
 数据库版本管理工具自动生成的目录，对数据库做的变更都会在这个文件夹里的versions记录，这里面的配置由fastapi-manage自动完成
@@ -114,7 +116,7 @@ Options:
   >
   > 注册后的导入方式: ```  import schemas; schemas.User```
 
-#### 9.tasks  任务队列
+#### 9.tasks  异步任务
 
 - config.py   # celery的配置项
 - tasks.py    # 默认创建， 用于存放任务，可自行修改，修改后在config.py中的include引用即可
@@ -135,7 +137,9 @@ Options:
 
 
 
-接口例子：
+#### 14. 框架详解
+
+- 接口例子：
 
 /api/endpoints/user.py
 
@@ -164,3 +168,237 @@ def create_user(*, utils:Utils(True, 'admin') = Depends(),
     return obj
 ```
 
+/schemas/user.py  (部分源码)
+
+```python
+from pydantic import BaseModel
+
+
+# 序列化器
+class UserCreate(BaseModel):
+    userid: str
+    username: Optional[str] = ''
+    email: Optional[str] = ''
+    is_active: Optional[bool] = True
+    is_staff: Optional[bool] = False
+```
+
+tip: 获取数据库会话的另一种方式
+
+```python
+from fastapi import Depends
+
+from api.common import get_session
+
+@router.get('/user', summary='获取所有用户')
+def get_all_user(session: Session = Depends(get_session)):
+    session.query(xxxx)
+    # session.close()  无需调用, 由get_session在接口调用完成后触发close
+```
+
+/api/common.py  (部分源码)
+
+```python
+def get_session() -> Generator:
+    db = SessionFactory()
+    try:
+        yield db
+    finally:
+        db.close()
+```
+
+- **配置中心：**
+
+core/config.py  (部分源码)
+
+> ```
+> PROJECT_NAME: str = "test-project"  # 项目名称
+> 
+> LOG_LEVEL: str = 'DEBUG'  # TRACE, INFO, SUCCESS, WARNING, ERROR, CRITICAL ...  # 日志等级
+> 
+> API_V1_STR: str = "/api/v1"  # 接口版本控制，http://localhost/api/v1/xxx
+> 
+> SECRET_KEY: str = "jymxRSTcLK7Y0AJrYVT12BGQ7HO7IvhXx5HM5_z55Xo"  # 密钥，每个项目会单独生成一个随机密钥, 可用于jwt的加解密
+> SALT_ROUNDS: int = 4  # 加盐次数, 决定密码哈希值的强度
+> 
+> # JWT过期时间 单位: 分钟
+> ACCESS_TOKEN_EXPIRES_MINUTES: int = 30
+> 
+> # 时区设置
+> TIMEZONE: str = 'Asia/Shanghai'
+> 
+> # 分页器, 用到分页器时需要配置
+> PAGE_QUERY_PARAM: str = ''
+> PAGE_SIZE_QUERY_PARAM: str = ''
+> 
+> # 跨域配置 默认允许全部
+> BACKEND_CORS_ORIGINS: List = ["*"]
+> 
+> # mysql数据库的配置， 其他关系型数据库也可直接修改此处，然后选择该数据库的引擎即可
+> MYSQL_USER: str = "test_user"
+> MYSQL_PASS: str = "123456"
+> MYSQL_HOST: str = "127.0.0.1"
+> MYSQL_DB: str = "test_db"
+> MYSQL_PORT: str = "3306"
+> SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
+> 
+> # Redis配置， 需要使用到时配置
+> REDIS_STORAGE_HOST: str = '127.0.0.1'
+> REDIS_STORAGE_PORT: str = '6379'
+> REDIS_STORAGE_PASS: str = ''
+> REDIS_STORAGE = f"redis://{REDIS_STORAGE_HOST}:{REDIS_STORAGE_PORT}/?password={REDIS_STORAGE_PASS}"
+> 
+> # 限流中间件后端
+> RATE_LIMIT_REDIS_BACKEND_HOST: str = 'localhost'
+> RATE_LIMIT_REDIS_BACKEND_PORT: str = '6379'
+> RATE_LIMIT_REDIS_BACKEND_DB: str = '12'
+> RATE_LIMIT_REDIS_BACKEND_PASS: str = 'Aa1234'
+> 
+> # Celery 中间人和后端的配置，主要用在异步任务
+> CELERY_BROKER: str = 'redis://:Aa1234@127.0.0.1:6379/7'
+> CELERY_BACKEND: str = 'redis://:Aa1234@127.0.0.1:6379/8'
+> 
+> 
+> class Config:
+>     case_sensitive = True
+> ```
+
+- **异步任务：**
+
+tasks/config.py  部分源码
+
+```python
+# 默认include自动生成的tasks.py文件， 如果有新增的py文件，创建后，在这边添加引用即可。
+include = ['tasks.tasks']
+```
+
+tasks.py
+
+```python
+from . import app
+
+
+@app.task()
+def say_hello(name: str) -> None:
+    print('hello world')
+```
+
+异步任务的调用
+
+```python
+from tasks.tasks import say_hello
+
+say_hello.delay('xiaoming')  # 即可将任务添加到消息队列中，等待celery去处理
+# 可达到异步执行的效果，在不要求消息强一致性，又是较耗时的操作时，考虑使用，需要考虑消息的可靠性，重复消费，顺序消费等问题。
+```
+
+- **主文件：**
+
+main.py   (部分源码)
+
+```python
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    openapi_url=f'{settings.API_V1_STR}/openapi.json',
+    docs_url='/docs',
+    redoc_url='/redoc',
+) # 文档地址配置等
+
+# 中间件的加载
+app.add_middleware(BearerAuthenticationMiddleware)  # 认证中间件
+app.add_middleware(DBSessionMiddleware)  # 自动数据库会话管理中间件
+if settings.BACKEND_CORS_ORIGINS:  # 跨域中间件
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.BACKEND_CORS_ORIGINS,
+        allow_credentials=True,  # 允许携带验证信息，如cookies之类的
+        allow_methods=["*"],  # 跨域-允许所有方法
+        allow_headers=["*"],  # 跨域-允许所有请求头
+    )
+ 
+# log配置
+logger.remove(handler_id=None)
+logger.add(sink=f'logs/{settings.PROJECT_NAME}-{{time:YYYY-MM-DD}}.log',
+           format="{time:YYYY-MM-DD HH:mm:ss}-{level}-{name}:{function}:{line}-{level}-{message}",  # 日志格式
+           level=settings.LOG_LEVEL,
+           enqueue=True,
+           diagnose=True,  # 显示详细的错误，可能会泄漏敏感数据
+           retention="10 days",  # 清理几天前的日志
+           rotation="24h",  # log文件在记录24小时后，就会新建一个新的文件来记录
+           encoding='utf-8',
+           # compression='zip'  # 启用压缩
+           )
+
+''' 开启diagnose后的异常显示：
+File "test.py", line 4, in func
+    return a / b
+           │   └ 0
+           └ 5
+'''
+
+# 启动事件
+@app.on_event('startup')
+async def startup_event():
+    print('startup_event')
+
+
+# 版本选择
+# app.include_router(api_router)
+# V1
+app.include_router(api_router, prefix=settings.API_V1_STR)
+
+```
+
+#### 15. 项目例子
+
+1. 安装框架
+
+   ```shell
+   pip install fastapi-manage
+   ```
+
+2. 生成项目
+
+   ```shell
+   fastapi-manage startproject t-project
+   cd ./t-project
+   ```
+
+3. 项目的初始配置
+
+   - config的配置
+
+4. 数据库模型的构建
+
+   - 编写models
+   - 生成迁移版本
+   - 应用数据库迁移
+
+5. 接口编写
+
+   - 设置路由
+   - 编写序列化器
+   - 编写业务逻辑
+
+
+
+**restful风格接口**  get post put delete 
+
+假设需要设计一个用户管理系统
+
+- **数据库设计**
+  - 用户基础信息表 (user)
+    - userid, username, gender, birthday, mobile, email, etc...
+  - 用户拓展信息表 (user_extra)
+    - userid, client_name, client_version, os_name, os_version, device_name, device_id, etc...
+
+
+
+- **接口设计**
+  - 登陆模块
+    - 用户登陆  --> post		->  def login()	-> username, password
+  - 用户模块
+    - 用户注册  **-->** post  **->** def create_user()	**->**  UserInfo   ->  User
+    - 修改用户  **-->** put    **->** def update_user()   **->**  UserInfo  ->  User
+    - 查询用户  **-->** get     **->** def get_user()/get_users()     **->** userid /  -> User/Users
+    - 删除用户  **-->** delete  **->** def delete_user()   **->**  userid    -> None

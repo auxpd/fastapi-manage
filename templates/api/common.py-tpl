@@ -8,7 +8,7 @@ from pydantic import ValidationError
 import crud
 import models
 import schemas
-from core import security
+from libs import security
 from core.config import settings
 from db.session import SessionFactory
 
