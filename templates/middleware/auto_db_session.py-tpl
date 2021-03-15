@@ -1,4 +1,5 @@
 from loguru import logger
+from sqlalchemy.orm import Session
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from db.session import SessionFactory
@@ -35,7 +36,7 @@ class DBSession(DBSessionBase):
             logger.debug('close db session')
 
     @property
-    def session(self):
+    def session(self) -> Session:
         if not self._db:
             self._db = SessionFactory()
             logger.debug('create db session')

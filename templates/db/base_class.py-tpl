@@ -39,11 +39,11 @@ class UserBase(Base):
 
     @property
     def groups(self) -> List[str]:
-        return [group for group in self._groups.split(',')] if self._group else []
+        return [group for group in self._groups.split(',')] if self._groups else []
 
     @groups.setter
     def groups(self, value: List[str] = None) -> None:
-        self._groups = ','.join([group.replace(' ', '') for group in value]) if value else ''
+        self._groups = ','.join([groups.replace(' ', '') for groups in value]) if value else ''
 
     def group_add(self, value: Union[str, List[str]]) -> None:
         """ Add groups for users """
