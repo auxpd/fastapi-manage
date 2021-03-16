@@ -382,7 +382,7 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 
 
-**restful风格接口**  get post put delete 
+**restful风格接口**  get post put delete ...
 
 假设需要设计一个用户管理系统
 
@@ -402,5 +402,5 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
   - 用户模块
     - 用户注册  **-->** post  **->** def create_user()	**->**  UserInfo   ->  User
     - 修改用户  **-->** put    **->** def update_user()   **->**  UserInfo  ->  User
-    - 查询用户  **-->** get     **->** def get_user()/get_users()     **->** userid /  -> User/Users
+    - 查询用户  **-->** get     **->** def get_user()/get_users()     **->** userid /  None-> User/Users
     - 删除用户  **-->** delete  **->** def delete_user()   **->**  userid    -> None
