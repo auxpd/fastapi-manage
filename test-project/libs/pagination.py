@@ -4,19 +4,6 @@ from fastapi import HTTPException, Query
 from sqlalchemy.orm import Query as QueryType
 
 
-"""
-1. 写好查询集, 不加.all() 或 one(), first() 之类的触发查询的操作
-2. 在接口中注入 pagination依赖(可设置最大每页数量 Pagination(300))
-3. pagination.queryset = QuerySet  # 设置分页对象的查询集
-4. pagination.get_page() 获取当前页的数据, pagination.count() 获取当前页的数据总数
-例：
-async def get_all_users(pagination: Pagination = Depends()) -> Any:
-    queryset = session.query(models.User)  # 确定查询集
-    pagination.queryset = queryset  # 传入查询集
-    return pagination.get_page()  # 取分页数据, 不填参数默认取用户的查询参数作为页数
-"""
-
-
 class Pagination:
     page_query_param = 'page'
     page_size_query_param = 'page_size'

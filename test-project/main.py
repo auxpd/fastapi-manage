@@ -17,7 +17,7 @@ app = FastAPI(
 # middleware
 app.add_middleware(BearerAuthenticationMiddleware)  # auth middleware
 app.add_middleware(DBSessionMiddleware)  # auto db session manage middleware
-if settings.BACKEND_CORS_ORIGINS:  # cors middleware
+if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.BACKEND_CORS_ORIGINS,
@@ -40,18 +40,7 @@ if settings.BACKEND_CORS_ORIGINS:  # cors middleware
 #            )
 
 
-@app.on_event('startup')
-async def startup_event():
-    print('startup_event')
-
 # app.include_router(api_router)
 
 # V1
 app.include_router(api_router, prefix=settings.API_V1_STR)
-
-
-if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app)
-    # from core.config import settings
-    # print(settings.TEST_1)

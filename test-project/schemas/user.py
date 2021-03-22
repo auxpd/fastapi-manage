@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, validator
@@ -10,8 +11,8 @@ class UserBase(BaseModel):
     department: Optional[str] = ''
     role: Optional[int] = None
     email: Optional[str] = ''
-    last_login: Optional[int] = None
-    date_joined: Optional[int] = int(time.time())
+    last_login: Optional[datetime] = None
+    date_joined: Optional[datetime] = None
     is_active: Optional[bool] = True
     is_staff: Optional[bool] = False
     is_superuser: Optional[bool] = False
@@ -40,12 +41,12 @@ class User(UserInDBBase):
 
     @validator('last_login')
     def last_login(cls, value):
-        return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(value)) if value else ''
+        return int(value.timestamp()) if value else ''
 
     @validator('date_joined')
     def date_joined(cls, value):
-        return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(value)) if value else ''
-
+        print(value)
+        return int(value.timestamp()) if value else ''
 
 class UserInDB(UserInDBBase):
     hashed_password: str

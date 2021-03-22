@@ -16,14 +16,6 @@ from core.config import settings
 from libs.security import TokenPayload
 
 
-"""
-1. 在config中配置rate后端RATE_LIMIT_BACKEND_HOST, RATE_LIMIT_BACKEND_PORT, RATE_LIMIT_BACKEND_DB, RATE_LIMIT_BACKEND_PASS
-2. 确定如何取唯一标识的函数(auth_func)
-3. 配置config参数, 也就是每个接口的访问频率限制 格式:  { r'^/hello': [Rule(minute=2, group='default'), Rule(group='admin')] }
-4. 注册中间件 app.add_middleware(RateLimitMiddleware, config=config)
-"""
-
-
 async def auth_func(scope: Scope) -> Tuple[str, str]:
     """
     Resolve the user's unique identifier and the user's group from ASGI SCOPE.

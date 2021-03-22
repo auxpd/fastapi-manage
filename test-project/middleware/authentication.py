@@ -17,25 +17,6 @@ from libs import security
 from core.config import settings
 
 
-"""
-认证中间件
-添加该中间件后，会解析用户请求头中的jwt, 根据载荷里的sub为用户唯一标识, group为用户组
-request.auth.scopes 用户所在组(list)
-request.user.is_authenticated 是否是认证用户(已登录)(bool)
-使用Utils：
-utils.auth.scopes 用户组
-utils.user.is_authenticated 是否死后认证用户
-
-BearerAuthBackend
-    headers: 请求头中存放jwt的key
-    auth_type： 认证类型
-    user_id_flag： jwt载荷中存放用户唯一标识的key
-    user_group_flag： jwt载荷中存放用户组信息的key
-    
-可以完善AuthUser中的obj 返回数据库中的用户对象, 之后可以utils.user.obj.用户属性 来获取到用户对象信息
-"""
-
-
 class BearerAuthenticationMiddleware(AuthenticationMiddleware):
     def __init__(
             self,

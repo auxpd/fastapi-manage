@@ -26,12 +26,13 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: List = ["*"]
 
     # Database configuration
-    MYSQL_USER: str = "{{ conf.mysql_user }}"
-    MYSQL_PASS: str = "{{ conf.mysql_pass }}"
-    MYSQL_HOST: str = "{{ conf.mysql_host }}"
-    MYSQL_DB: str = "{{ conf.mysql_db }}"
-    MYSQL_PORT: str = "{{ conf.mysql_port }}"
-    SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
+    DATABASE_USER: str = "{{ conf.db_user }}"
+    DATABASE_PASS: str = "{{ conf.db_pass }}"
+    DATABASE_HOST: str = "{{ conf.db_host }}"
+    DATABASE_DB: str = "{{ conf.db_db }}"
+    DATABASE_PORT: str = "{{ conf.db_port }}"
+    SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://" \
+                                   f"{DATABASE_USER}:{DATABASE_PASS}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_DB}"
 
     # Redis store address
     REDIS_STORAGE_HOST: str = "{{ conf.redis_host }}"
