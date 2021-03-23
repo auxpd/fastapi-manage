@@ -41,3 +41,4 @@ class DBSession(DBSessionBase):
             self._db = SessionFactory()
             logger.debug('create db session')
         return self._db
+

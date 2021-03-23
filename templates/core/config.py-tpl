@@ -8,10 +8,10 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     PROJECT_NAME: str = "{{ conf.project_name }}"
 
-    LOG_LEVEL: str = 'DEBUG'  # TRACE, INFO, SUCCESS, WARNING, ERROR, CRITICAL ...
+    LOG_LEVEL: str = "DEBUG"  # TRACE, INFO, SUCCESS, WARNING, ERROR, CRITICAL ...
 
     API_V1_STR: str = "/api/v1"
-    API_LOGIN_URL: str = '/api/v1/login'
+    API_LOGIN_URL: str = "/api/v1/login"
 
     SECRET_KEY: str = "{{ conf.secret_key }}"
     SALT_ROUNDS: int = 4
@@ -38,17 +38,16 @@ class Settings(BaseSettings):
     REDIS_STORAGE_HOST: str = "{{ conf.redis_host }}"
     REDIS_STORAGE_PORT: str = "{{ conf.redis_port }}"
     REDIS_STORAGE_PASS: str = "{{ conf.redis_password }}"
-    REDIS_STORAGE = f"redis://{REDIS_STORAGE_HOST}:{REDIS_STORAGE_PORT}/?password={REDIS_STORAGE_PASS}"
 
     # RateLimitBackend
-    RATE_LIMIT_REDIS_BACKEND_HOST: str = 'localhost'
-    RATE_LIMIT_REDIS_BACKEND_PORT: str = '6379'
-    RATE_LIMIT_REDIS_BACKEND_DB: str = '0'
-    RATE_LIMIT_REDIS_BACKEND_PASS: str = ''
+    RATE_LIMIT_REDIS_BACKEND_HOST: str = "localhost"
+    RATE_LIMIT_REDIS_BACKEND_PORT: str = "6379"
+    RATE_LIMIT_REDIS_BACKEND_DB: str = "0"
+    RATE_LIMIT_REDIS_BACKEND_PASS: str = ""
 
     # Celery broker & backend
-    CELERY_BROKER: str = ''
-    CELERY_BACKEND: str = ''
+    CELERY_BROKER: str = ""
+    CELERY_BACKEND: str = ""
 
     class Config:
         case_sensitive = True

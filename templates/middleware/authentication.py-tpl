@@ -90,3 +90,4 @@ class AuthUser(BaseUser, ABC):
         :return: User object in db
         """
         return None
+

@@ -81,3 +81,4 @@ class RateLimitMiddleware(RateLimitMixin):
             on_blocked: ASGIApp = default_429,
     ) -> None:
         super().__init__(app, authenticate, backend, config, on_blocked=on_blocked)
+

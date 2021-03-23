@@ -154,8 +154,8 @@ from libs.dependencies import Utils
 router = APIRouter()  # 定义当前文件里的app对象
 
 @router.post('user', summary='创建用户')  # 第一个参数是url path, summary是接口的概要
-def create_user(*, utils:Utils(True, 'admin') = Depends(),
-               user: schemas.UserCreate):
+def create_user(*, utils: UtilsObject = Depends(Utils(True)),
+               user: schemas.UserCreate):s
     session = utils.db.session  # 获取会话 需要加载数据库会话管理中间件
     hashed_pwd = security.get_password_hash(user.password)  # 获取密码哈希值
     user_dict = user.dict(exclude={'password'})  # 排除password
@@ -163,9 +163,9 @@ def create_user(*, utils:Utils(True, 'admin') = Depends(),
     user_obj = models.User(**user_dict)  # 创建一个User对象
     session.add(user_obj)  # 添加对象
     session.commit()  # 提交事务
-    obj = session.flush(user_obj)  # 刷新对象
+    session.refresh(user_obj)  # # 刷新对象
     # session.close()  由数据库会话管理中间件自动归还, 未开启时需要手动关闭会话
-    return obj
+    return user_obj
 ```
 
 /schemas/user.py  (部分源码)
@@ -194,6 +194,15 @@ from api.common import get_session
 def get_all_user(session: Session = Depends(get_session)):
     session.query(xxxx)
     # session.close()  无需调用, 由get_session在接口调用完成后触发close
+
+# 使用分页器
+from libs.pagination import Pagination
+@router.get('/user', summary='获取所有用户')
+def get_all_user(*, utils: UtilsObject = Depends(Utils(False)),  # Utils(False) 不需要认证
+                 pagination: Pagination(400) = Depends()) -> Any:  # Pagination(400) 最大允许400条/页
+    pagination.queryset = utils.db.session.query(models.User)  # 设置查询集
+    result = {'count': pagination.count(), 'data': pagination.get_page()}  # get_page() 获取当页的数据，默认由用户填入
+    return result
 ```
 
 /api/common.py  (部分源码)
@@ -290,6 +299,44 @@ from tasks.tasks import say_hello
 
 say_hello.delay('xiaoming')  # 即可将任务添加到消息队列中，等待celery去处理
 # 可达到异步执行的效果，在不要求消息强一致性，又是较耗时的操作时，考虑使用，需要考虑消息的可靠性，重复消费，顺序消费等问题。
+```
+
+redis的使用
+```python
+# 1.需要在config中配置redis的连接信息
+# 2.使用
+from db.session import redis_session
+
+@router.get('/user')
+async def get_user(*, utils: UtilsObject = Depends(Utils(False)),) -> Any:
+    await redis_session(0).set('t1', 'test')  # 参数0表示 0号数据库
+    result = await redis_session(0).get('t1')
+    print(result)
+```
+
+security库的使用
+```python
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+
+from libs import security
+import models
+
+@router.post('/user', response_model=security.Token)
+async def login(*, utils: UtilsObject = Depends(Utils(False)),
+                form_data: OAuth2PasswordRequestForm = Depends()) -> Any:
+    session: Session = utils.db.session
+    userid = form_data.username
+    pwd = form_data.password
+    user: models.User = session.query(models.User).filter_by(userid=userid).first()
+    if user:
+        if security.verify_password(pwd, user.hashed_password):  # 校验密码
+            token_obj = security.create_access_token(user.userid, user.groups)  # 创建jwt， 
+            return token_obj # token_obj 格式可在lib.security中查看
+    raise HTTPException(status_code=401, detail='错误的用户名或密码')
+
+security.get_password_hash('123456')  # 获取密码哈希值
 ```
 
 - **主文件：**
