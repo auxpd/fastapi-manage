@@ -8,12 +8,12 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     PROJECT_NAME: str = "test-project"
 
-    LOG_LEVEL: str = 'DEBUG'  # TRACE, INFO, SUCCESS, WARNING, ERROR, CRITICAL ...
+    LOG_LEVEL: str = "DEBUG"  # TRACE, INFO, SUCCESS, WARNING, ERROR, CRITICAL ...
 
     API_V1_STR: str = "/api/v1"
-    API_LOGIN_URL: str = '/api/v1/login'
+    API_LOGIN_URL: str = "/api/v1/login"
 
-    SECRET_KEY: str = "5JEeuZX7qtjnK4TfqT7gN1yxQvdN_YJy5eyPr8lkAoo"
+    SECRET_KEY: str = "UJUqQjO64GC2y34KEnmGSIEPbiOk5sFUgJ3KDn-GqW0"
     SALT_ROUNDS: int = 4
 
     # JWT expiration time
@@ -38,17 +38,16 @@ class Settings(BaseSettings):
     REDIS_STORAGE_HOST: str = "127.0.0.1"
     REDIS_STORAGE_PORT: str = "6379"
     REDIS_STORAGE_PASS: str = ""
-    REDIS_STORAGE = f"redis://{REDIS_STORAGE_HOST}:{REDIS_STORAGE_PORT}/?password={REDIS_STORAGE_PASS}"
 
     # RateLimitBackend
-    RATE_LIMIT_REDIS_BACKEND_HOST: str = 'localhost'
-    RATE_LIMIT_REDIS_BACKEND_PORT: str = '6379'
-    RATE_LIMIT_REDIS_BACKEND_DB: str = '0'
-    RATE_LIMIT_REDIS_BACKEND_PASS: str = ''
+    RATE_LIMIT_REDIS_BACKEND_HOST: str = "localhost"
+    RATE_LIMIT_REDIS_BACKEND_PORT: str = "6379"
+    RATE_LIMIT_REDIS_BACKEND_DB: str = "0"
+    RATE_LIMIT_REDIS_BACKEND_PASS: str = ""
 
     # Celery broker & backend
-    CELERY_BROKER: str = ''
-    CELERY_BACKEND: str = ''
+    CELERY_BROKER: str = ""
+    CELERY_BACKEND: str = ""
 
     class Config:
         case_sensitive = True

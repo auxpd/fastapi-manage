@@ -18,8 +18,11 @@ class UserBase(BaseModel):
     is_superuser: Optional[bool] = False
 
 
-class UserCreate(UserBase):
+class UserCreate(BaseModel):
+    userid: str
     role: int
+    username: Optional[str] = ''
+    department: Optional[str] = ''
     password: str = None
     is_staff: Optional[bool] = False
 
@@ -47,6 +50,7 @@ class User(UserInDBBase):
     def date_joined(cls, value):
         print(value)
         return int(value.timestamp()) if value else ''
+
 
 class UserInDB(UserInDBBase):
     hashed_password: str
