@@ -79,3 +79,4 @@ Options:
 - 调整了目录结构，增加了常用中间件，以及一个工具类  
 - 整合了aredis，redisbloom，使用db/session/redis_session(x)即可调用  
 - 修改了core/config 中的数据库字段，与旧版本不兼容，可手动修改字段名称实现兼容  
+- 增加了对spug运维平台的支持，可云端配置项目  
