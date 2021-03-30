@@ -62,4 +62,3 @@ class UserBase(Base):
             if value in groups:
                 groups.remove(value)
         self.groups = groups
-

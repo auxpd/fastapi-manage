@@ -7,4 +7,3 @@ import schemas
 from libs.dependencies import Utils, UtilsObject
 
 router = APIRouter()
-

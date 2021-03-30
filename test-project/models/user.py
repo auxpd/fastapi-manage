@@ -19,4 +19,3 @@ class User(UserBase):
     is_active = Column(Boolean, default=True)
     is_staff = Column(Boolean, default=False)
     is_superuser = Column(Boolean, default=False)
-

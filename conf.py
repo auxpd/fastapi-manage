@@ -13,11 +13,11 @@ class Configure(BaseSettings):
     project_name: str = ""
     secret_key: str = ""
 
-    mysql_user: str = ""
-    mysql_pass: str = ""
-    mysql_host: str = ""
-    mysql_db: str = ""
-    mysql_port: str = ""
+    db_user: str = ""
+    db_pass: str = ""
+    db_host: str = ""
+    db_db: str = ""
+    db_port: str = ""
 
     redis_host: str = "127.0.0.1"
     redis_port: str = "6379"

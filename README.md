@@ -14,6 +14,14 @@ fastapi+sqlalchemy
     - 支持开发者进行修改或开发新的模板
 3.  conf.py 里包含可配置的模板参数
 4.  main 负责提供所有功能，创建项目，执行迁移等等
+#### 项目组件的使用
+1. 中间件：
+    1. 认证中间件
+    2. 限流中间件
+    
+2. 库：
+    1. 分页库
+    2. 工具库
 
 #### fastapi-manage的使用
 ##### 安装
@@ -71,11 +79,8 @@ Options:
 - 修改了生成密码hash的方式，可自定义调整加盐的次数
 - 修复了在windows系统下使用serializer的兼容问题
 
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+##### 0.8.0
+- 调整了目录结构，增加了常用中间件，以及一个工具类  
+- 整合了aredis，redisbloom，使用db/session/redis_session(x)即可调用  
+- 修改了core/config 中的数据库字段，与旧版本不兼容，可手动修改字段名称实现兼容  
+- 增加了对spug运维平台的支持，可云端配置项目  

@@ -12,4 +12,3 @@ def get_session() -> Generator:
         yield db
     finally:
         db.close()
-

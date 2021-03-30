@@ -6,14 +6,14 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "{{ conf.project_name }}"
+    PROJECT_NAME: str = "test-project"
 
     LOG_LEVEL: str = "DEBUG"  # TRACE, INFO, SUCCESS, WARNING, ERROR, CRITICAL ...
 
     API_V1_STR: str = "/api/v1"
     API_LOGIN_URL: str = "/api/v1/login"
 
-    SECRET_KEY: str = "{{ conf.secret_key }}"
+    SECRET_KEY: str = "BHT6tHlsdKV1h39TH1WmP5c9_6fPBjd1QloY-OixMII"
     SALT_ROUNDS: int = 4
 
     # JWT expiration time
@@ -26,18 +26,18 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: List = ["*"]
 
     # Database configuration
-    DATABASE_USER: str = "{{ conf.db_user }}"
-    DATABASE_PASS: str = "{{ conf.db_pass }}"
-    DATABASE_HOST: str = "{{ conf.db_host }}"
-    DATABASE_DB: str = "{{ conf.db_db }}"
-    DATABASE_PORT: str = "{{ conf.db_port }}"
+    DATABASE_USER: str = ""
+    DATABASE_PASS: str = ""
+    DATABASE_HOST: str = ""
+    DATABASE_DB: str = ""
+    DATABASE_PORT: str = "3306"
     SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://" \
                                    f"{DATABASE_USER}:{DATABASE_PASS}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_DB}"
 
     # Redis store address
-    REDIS_STORAGE_HOST: str = "{{ conf.redis_host }}"
-    REDIS_STORAGE_PORT: str = "{{ conf.redis_port }}"
-    REDIS_STORAGE_PASS: str = "{{ conf.redis_password }}"
+    REDIS_STORAGE_HOST: str = "127.0.0.1"
+    REDIS_STORAGE_PORT: str = "6379"
+    REDIS_STORAGE_PASS: str = ""
 
     # RateLimitBackend
     RATE_LIMIT_REDIS_BACKEND_HOST: str = "localhost"
@@ -92,4 +92,3 @@ def get_config():
 
 
 settings = get_config()
-
