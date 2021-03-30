@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     API_LOGIN_URL: str = "/api/v1/login"
 
-    SECRET_KEY: str = "UJUqQjO64GC2y34KEnmGSIEPbiOk5sFUgJ3KDn-GqW0"
+    SECRET_KEY: str = "BHT6tHlsdKV1h39TH1WmP5c9_6fPBjd1QloY-OixMII"
     SALT_ROUNDS: int = 4
 
     # JWT expiration time
