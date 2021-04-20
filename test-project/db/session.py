@@ -1,13 +1,13 @@
 from functools import lru_cache
 
 from fastapi_manage.redis import StrictRedis
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 from core.config import settings
+#TEST:
+from core.auto_session import auto_sessionmaker, auto_engine
 
-engine = create_engine(settings.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True, pool_size=8)
-SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine = auto_engine(settings.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True, pool_size=8)
+SessionFactory = auto_sessionmaker(engine, autocommit=False, autoflush=False)  # 异步建议增加 expire_on_commit=False
 
 
 @lru_cache()

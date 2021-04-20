@@ -5,7 +5,7 @@ description = "FastAPI template generation, database version management tools"
 authors = ["lewei_huang <auxpd96@163.com>"]
 readme = 'README.md'
 license = "MIT"
-repository = "https://gitee.com/LeanDe/fastapi-manage"
+repository = "https://github.com/auxpd/fastapi-manage"
 classifiers=[
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
@@ -16,6 +16,10 @@ classifiers=[
 [tool.poetry.scripts]
 fastapi-manage = "fastapi_manage.main:app"
 
+[tool.poetry.urls]
+"repository" = "https://gitee.com/LeanDe/fastapi-manage"
+"github" = "https://github.com/auxpd/fastapi-manage"
+
 [tool.poetry.dependencies]
 python = ">=3.6"
 typer = ">=0.3.2"
@@ -23,9 +27,9 @@ configobj = ">=5.0.6"
 Jinja2 = ">=2.11.2"
 fastapi = ">=0.62.0"
 uvicorn = ">=0.11.8"
-SQLAlchemy = ">=1.3.20"
+SQLAlchemy = ">=1.4.9"
 alembic = ">=1.5.6"
-PyMySQL = ">=0.9.3"
+aiomysql = ">=0.0.21"
 aredis = ">=1.1.8"
 python-jose = ">=3.2.0"
 bcrypt = ">=3.2.0"

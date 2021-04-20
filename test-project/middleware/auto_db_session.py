@@ -1,8 +1,9 @@
+import asyncio
 from loguru import logger
 from sqlalchemy.orm import Session
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from db.session import SessionFactory
+from db.session import SessionFactory, engine
 
 
 class DBSessionMiddleware(BaseHTTPMiddleware):
@@ -15,7 +16,7 @@ class DBSessionMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         request.state.db = DBSession()
         response = await call_next(request)
-        request.state.db.__del__()
+        await request.state.db.close()
         return response
 
 
@@ -30,9 +31,15 @@ class DBSession(DBSessionBase):
     def __init__(self):
         self._db = None
 
-    def __del__(self):
+    async def close(self):
         if self._db:
-            self._db.close()
+            if asyncio.iscoroutinefunction(self._db.close):
+                await self._db.close()
+                logger.debug('关闭异步会话')
+            else:
+                loop = asyncio.get_event_loop()
+                loop.run_in_executor(None, self._db.close)
+                logger.debug('关闭同步会话')
             logger.debug('close db session')
 
     @property
@@ -41,3 +48,7 @@ class DBSession(DBSessionBase):
             self._db = SessionFactory()
             logger.debug('create db session')
         return self._db
+
+    @property
+    def is_async(self) -> bool:
+        return engine.dialect.is_async

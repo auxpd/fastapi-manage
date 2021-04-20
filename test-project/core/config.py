@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     DATABASE_HOST: str = ""
     DATABASE_DB: str = ""
     DATABASE_PORT: str = "3306"
-    SQLALCHEMY_DATABASE_URI: str = f"mysql+pymysql://" \
+    SQLALCHEMY_DATABASE_URI: str = f"mysql+aiomysql://" \
                                    f"{DATABASE_USER}:{DATABASE_PASS}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_DB}"
 
     # Redis store address
