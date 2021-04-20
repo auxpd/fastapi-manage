@@ -6,6 +6,7 @@ FastAPI template generation, database version management tools.
 Just like Django.  
 
 fastapi+sqlalchemy  
+Source Code: https://github.com/auxpd/fastapi-manage
 
 #### Installation
 ```shell
